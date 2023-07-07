@@ -3,6 +3,9 @@ interface PlayerConstructorType {
 }
 
 interface PlayerInstanceType {
+  name: string;
+  isBot: boolean;
+  matches: number;
   takeMatches(matches: number): void;
 }
 
