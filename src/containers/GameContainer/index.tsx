@@ -1,8 +1,12 @@
 import React from "react";
-import StartScreen from "../../components/Game/StartScreen";
+import StartForm from "../../components/Game/StartForm";
 
 function GameContainer(): JSX.Element {
-  return <StartScreen />;
+  const onPlayClick = React.useCallback((data: any) => {
+    console.log(data);
+  }, []);
+
+  return <StartForm onSubmit={onPlayClick} />;
 }
 
 export default GameContainer;
