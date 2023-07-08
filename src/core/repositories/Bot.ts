@@ -5,7 +5,7 @@ class Bot extends Player implements BotInstanceType {
   heaps;
 
   constructor(n: number, m: number, name: string = "Bot") {
-    super(name);
+    super(name, true);
     this.heaps = new Array(n).fill(2 * n + 1) as number[];
   }
 
