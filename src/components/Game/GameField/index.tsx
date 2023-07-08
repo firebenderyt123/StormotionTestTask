@@ -26,6 +26,7 @@ function GameField({ game }: GameFieldProps): JSX.Element {
 
   React.useEffect(() => {
     // if bot moves first remove matches
+    console.log(game);
     if (isGameEnded(game) || !isCurrentPlayerBot(game)) return;
 
     const botTookMatches = botMakeDecision(game);
@@ -42,7 +43,7 @@ function GameField({ game }: GameFieldProps): JSX.Element {
       setSelectedMatchesIndexes([]);
     }, 1500);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [game]);
+  }, [matchesLeftIndexes]);
 
   // on match select
   const matchOnClick = React.useCallback(
