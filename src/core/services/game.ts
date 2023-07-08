@@ -11,7 +11,7 @@ function initGame(
   const validation = Game.validateInitGameParams(n, m);
   if (validation !== true) console.error(validation);
 
-  const bot = new Bot(n, m);
+  const bot = new Bot();
   const user = new User(userName);
 
   const players = isUserFirst ? [user, bot] : [bot, user];
