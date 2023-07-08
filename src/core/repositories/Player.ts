@@ -2,12 +2,10 @@ import { PlayerInstanceType } from "../interfaces/Player";
 
 class Player implements PlayerInstanceType {
   name: string;
-  isBot: boolean;
   matches: number;
 
-  constructor(name: string, isBot: boolean = false) {
+  constructor(name: string) {
     this.name = name;
-    this.isBot = isBot;
     this.matches = 0;
   }
 

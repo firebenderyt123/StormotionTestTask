@@ -1,57 +1,82 @@
 import React from "react";
+import { Button, Stack, Switch, TextField, Typography } from "@mui/material";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { FormInputs } from "./types";
 
 type StartFormProps = {
-  onSubmit(data: any): void;
+  onSubmit(data: FormInputs): void;
 };
 
 function StartForm({ onSubmit }: StartFormProps): JSX.Element {
-  const [nValue, setNValue] = React.useState<number>(12);
-  const [mValue, setMValue] = React.useState<number>(3);
-
-  const nOnChangeHanlder = (event: any) => {
-    const val = +event.target.value;
-    if (val >= 3 && val >= mValue && val <= 100) {
-      setNValue(val);
-    }
-  };
-
-  const mOnChangeHanlder = (event: any) => {
-    const val = +event.target.value;
-    if (val >= 2 && val <= 10) {
-      setMValue(val);
-    }
-  };
-
-  const onSubmitHadler = (event: any) => {
-    event.preventDefault();
-    const data = {
-      n: nValue,
-      m: mValue,
-    };
-    onSubmit(data);
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormInputs>({
+    defaultValues: {
+      name: "Player",
+      n: 12,
+      m: 3,
+      isUserFirst: true,
+    },
+  });
+  const onSubmitHandler: SubmitHandler<FormInputs> = (data) => onSubmit(data);
 
   return (
-    <form onSubmit={onSubmitHadler}>
-      <input
-        type="number"
-        name="n"
-        placeholder="n"
-        min="3"
-        value={nValue}
-        onChange={nOnChangeHanlder}
+    <form onSubmit={handleSubmit(onSubmitHandler)}>
+      <TextField
+        type="text"
+        label="name"
+        {...register("name", nameValidate)}
+        error={!!errors.name}
+        helperText={errors.name?.message}
       />
-      <input
+      <TextField
         type="number"
-        name="m"
-        placeholder="m"
-        min="2"
-        value={mValue}
-        onChange={mOnChangeHanlder}
+        label="n"
+        {...register("n", nValidate)}
+        error={!!errors.n}
+        helperText={errors.n?.message}
       />
-      <button type="submit">Play</button>
+      <TextField
+        type="number"
+        label="m"
+        {...register("m", mValidate)}
+        error={!!errors.m}
+        helperText={errors.m?.message}
+      />
+      <Stack direction="row" spacing={1} alignItems="center">
+        <Typography>Bot</Typography>
+        <Switch defaultChecked {...register("isUserFirst")} />
+        <Typography>User</Typography>
+      </Stack>
+      <Button type="submit">Play</Button>
     </form>
   );
 }
+
+const nameValidate = {
+  required: "'name' is required",
+  minLength: { value: 2, message: "Min length is 2" },
+  maxLength: { value: 16, message: "Max length is 16" },
+  pattern: {
+    value: /^[a-z]+(?:[0-9_]*)$/i,
+    message: "Invalid 'name'",
+  },
+};
+
+const nValidate = {
+  required: "'n' is required",
+  valueAsNumber: true,
+  min: { value: 3, message: "Min value is 3" },
+  max: { value: 100, message: "Max value is 100" },
+};
+
+const mValidate = {
+  required: "'m' is required",
+  valueAsNumber: true,
+  min: { value: 2, message: "Min value is 2" },
+  max: { value: 10, message: "Max value is 10" },
+};
 
 export default StartForm;

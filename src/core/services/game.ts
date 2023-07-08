@@ -1,6 +1,7 @@
 import Bot from "../repositories/Bot";
 import Game from "../repositories/Game";
-import User from "../repositories/Player";
+import Player from "../repositories/Player";
+import User from "../repositories/User";
 
 function initGame(
   userName: string,
@@ -47,4 +48,8 @@ function userTakeMatches(game: Game, matches: number): void {
   game.nextPlayer();
 }
 
-export { initGame, botTakeMatches, userTakeMatches };
+function currentPlayer(game: Game): Player {
+  return game.getCurrentPlayer();
+}
+
+export { initGame, botTakeMatches, userTakeMatches, currentPlayer };
