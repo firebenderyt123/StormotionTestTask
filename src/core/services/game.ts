@@ -1,6 +1,5 @@
 import Bot from "../repositories/Bot";
 import Game from "../repositories/Game";
-import Player from "../repositories/Player";
 import User from "../repositories/User";
 
 function initGame(
@@ -22,21 +21,6 @@ function initGame(
 }
 
 function botMakeDecision(game: Game): number {
-  const bot = game.getCurrentPlayer() as Bot;
-
-  // const nimSum = Bot.calculateNimSum(bot.heaps);
-
-  // let chosenMatches;
-  // if (nimSum === 0) {
-  //   // No guaranteed winning strategy, choose randomly
-  //   chosenMatches = Math.floor(Math.random() * game.m) + 1;
-  // } else {
-  //   const chosenHeap = Bot.chooseHeap(bot.heaps, nimSum);
-  //   chosenMatches = chosenHeap - (chosenHeap ^ nimSum);
-  //   bot.heaps[chosenHeap] -= chosenMatches;
-  // }
-  // return chosenMatches;
-
   const { n, m, matchesLeft, totalMatches } = game;
 
   // if AI starts the game
@@ -72,23 +56,8 @@ function playerTakeMatches(game: Game, matches: number): number {
   return player.matches;
 }
 
-function currentPlayer(game: Game): Player {
-  return game.getCurrentPlayer();
-}
-
 function isCurrentPlayerBot(game: Game): boolean {
   return game.getCurrentPlayer().isBot;
 }
 
-function isGameEnded(game: Game): boolean {
-  return game.isGameEnded();
-}
-
-export {
-  initGame,
-  botMakeDecision,
-  playerTakeMatches,
-  currentPlayer,
-  isCurrentPlayerBot,
-  isGameEnded,
-};
+export { initGame, botMakeDecision, playerTakeMatches, isCurrentPlayerBot };

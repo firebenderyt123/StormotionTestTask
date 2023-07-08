@@ -16,7 +16,7 @@ interface GameInstanceType {
   reduceMatches(matches: number): void;
   nextPlayer(): void;
   getCurrentPlayer(): PlayerInstanceType;
-  isGameEnded(): boolean;
+  isEnded(): boolean;
   getWinner(): PlayerInstanceType;
 }
 

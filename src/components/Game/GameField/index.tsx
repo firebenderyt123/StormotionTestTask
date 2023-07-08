@@ -5,7 +5,6 @@ import Game from "../../../core/repositories/Game";
 import {
   botMakeDecision,
   isCurrentPlayerBot,
-  isGameEnded,
   playerTakeMatches,
 } from "../../../core/services/game";
 import { chooseRandomElements } from "../../../core/utils/game";
@@ -13,9 +12,10 @@ import Match from "../Match";
 
 type GameFieldProps = {
   game: Game;
+  onFinish(): void;
 };
 
-function GameField({ game }: GameFieldProps): JSX.Element {
+function GameField({ game, onFinish }: GameFieldProps): JSX.Element {
   const [userMatches, setUserMatches] = React.useState<number>(0);
   const [selectedMatchesIndexes, setSelectedMatchesIndexes] = React.useState<
     number[]
@@ -26,8 +26,7 @@ function GameField({ game }: GameFieldProps): JSX.Element {
 
   React.useEffect(() => {
     // if bot moves first remove matches
-    console.log(game);
-    if (isGameEnded(game) || !isCurrentPlayerBot(game)) return;
+    if (game.isEnded() || !isCurrentPlayerBot(game)) return;
 
     const botTookMatches = botMakeDecision(game);
     const matchesIds = chooseRandomElements(matchesLeftIndexes, botTookMatches);
@@ -41,9 +40,12 @@ function GameField({ game }: GameFieldProps): JSX.Element {
         prev.filter((elem) => !matchesIds.includes(elem))
       );
       setSelectedMatchesIndexes([]);
+      // check if game ended
+      if (game.isEnded()) {
+        onFinish();
+      }
     }, 1500);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [matchesLeftIndexes]);
+  }, [game, matchesLeftIndexes, onFinish]);
 
   // on match select
   const matchOnClick = React.useCallback(
@@ -76,7 +78,11 @@ function GameField({ game }: GameFieldProps): JSX.Element {
       prev.filter((elem) => !selectedMatchesIndexes.includes(elem))
     );
     setSelectedMatchesIndexes([]);
-  }, [game, selectedMatchesIndexes]);
+    // check if game ended
+    if (game.isEnded()) {
+      onFinish();
+    }
+  }, [game, onFinish, selectedMatchesIndexes]);
 
   // matches list
   const matches = React.useMemo(

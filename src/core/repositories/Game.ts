@@ -30,7 +30,7 @@ class Game implements GameInstanceType {
     return this.players[this.currentPlayerIndex];
   }
 
-  isGameEnded(): boolean {
+  isEnded(): boolean {
     return this.matchesLeft === 0;
   }
 
