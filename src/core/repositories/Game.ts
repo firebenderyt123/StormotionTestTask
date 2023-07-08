@@ -43,7 +43,7 @@ class Game implements GameInstanceType {
   static validateInitGameParams(n: number, m: number): string | true {
     if (m <= 1) return "'m' must be > 1";
     if (n <= 2) return "'n' must be > 2";
-    if (n <= m) return "'n' must be > m";
+    if (n <= m) return "'n' must be > 'm'";
     return true;
   }
 }

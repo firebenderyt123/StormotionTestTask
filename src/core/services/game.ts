@@ -21,28 +21,19 @@ function initGame(
 }
 
 function botMakeDecision(game: Game): number {
-  const { n, m, matchesLeft, totalMatches } = game;
-
-  // if AI starts the game
-  if (matchesLeft === totalMatches) {
-    if ((2 * n + 1) % (m + 1) === 0) {
-      return m;
-    } else {
-      return (2 * n + 1) % (m + 1);
-    }
-  }
+  const bot = game.getCurrentPlayer();
+  const { m, matchesLeft } = game;
 
   // Check if it's the final moves
   if (matchesLeft <= m) {
-    return matchesLeft;
+    return (bot.matches + matchesLeft) % 2 === 0 || matchesLeft === 1
+      ? matchesLeft
+      : matchesLeft - 1;
   }
 
   // middle AI moves
-  if (matchesLeft % 2 === 0) {
-    return Math.min(m, matchesLeft - 1);
-  } else {
-    return Math.min(m, matchesLeft - 2);
-  }
+  const optimalMatches = matchesLeft % (m + 1);
+  return optimalMatches === 0 ? m : optimalMatches;
 }
 
 function playerTakeMatches(game: Game, matches: number): number {

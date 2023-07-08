@@ -12,6 +12,7 @@ function StartForm({ onSubmit }: StartFormProps): JSX.Element {
     register,
     handleSubmit,
     formState: { errors },
+    getValues,
   } = useForm<FormInputs>({
     defaultValues: {
       name: "Player",
@@ -34,7 +35,11 @@ function StartForm({ onSubmit }: StartFormProps): JSX.Element {
       <TextField
         type="number"
         label="n"
-        {...register("n", nValidate)}
+        {...register("n", {
+          ...nValidate,
+          validate: (value: number) =>
+            value > getValues().m || "'n' must be > 'm'",
+        })}
         error={!!errors.n}
         helperText={errors.n?.message}
       />
