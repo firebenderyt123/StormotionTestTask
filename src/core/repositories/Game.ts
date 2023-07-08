@@ -23,7 +23,7 @@ class Game implements GameInstanceType {
   }
 
   nextPlayer(): void {
-    this.currentPlayerIndex = this.currentPlayerIndex === 0 ? 1 : 0;
+    this.currentPlayerIndex = +!this.currentPlayerIndex;
   }
 
   getCurrentPlayer(): PlayerInstanceType {
