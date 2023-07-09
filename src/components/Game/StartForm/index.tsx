@@ -1,7 +1,19 @@
 import React from "react";
-import { Button, Stack, Switch, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  BoxProps,
+  Button,
+  ButtonProps,
+  Stack,
+  Switch,
+  TextField,
+  TextFieldProps,
+  Typography,
+} from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { FormInputs } from "./types";
+import Emoji from "../../ui/Emoji";
 
 type StartFormProps = {
   onSubmit(data: FormInputs): void;
@@ -25,40 +37,82 @@ function StartForm({ onSubmit }: StartFormProps): JSX.Element {
 
   return (
     <form onSubmit={handleSubmit(onSubmitHandler)}>
-      <TextField
-        type="text"
-        label="name"
-        {...register("name", nameValidate)}
-        error={!!errors.name}
-        helperText={errors.name?.message}
-      />
-      <TextField
-        type="number"
-        label="n"
-        {...register("n", {
-          ...nValidate,
-          validate: (value: number) =>
-            value > getValues().m || "'n' must be > 'm'",
-        })}
-        error={!!errors.n}
-        helperText={errors.n?.message}
-      />
-      <TextField
-        type="number"
-        label="m"
-        {...register("m", mValidate)}
-        error={!!errors.m}
-        helperText={errors.m?.message}
-      />
-      <Stack direction="row" spacing={1} alignItems="center">
-        <Typography>Bot</Typography>
-        <Switch defaultChecked {...register("isUserFirst")} />
-        <Typography>User</Typography>
-      </Stack>
-      <Button type="submit">Play</Button>
+      <FormContainer>
+        <TextFieldStyled
+          type="text"
+          label="🧒 name"
+          {...register("name", nameValidate)}
+          error={!!errors.name}
+          helperText={errors.name?.message}
+        />
+        <TextField
+          type="number"
+          label="n"
+          {...register("n", {
+            ...nValidate,
+            validate: (value: number) =>
+              value > getValues().m || "'n' must be > 'm'",
+          })}
+          error={!!errors.n}
+          helperText={errors.n?.message}
+        />
+        <TextField
+          type="number"
+          label="m"
+          {...register("m", mValidate)}
+          error={!!errors.m}
+          helperText={errors.m?.message}
+        />
+        <ToggleContainer>
+          <Typography variant="h5">First move</Typography>
+          <Stack
+            direction="row"
+            spacing={1}
+            alignItems="center"
+            justifyContent="center">
+            <Typography>
+              <Emoji emoji="🤖" component="span" /> Bot
+            </Typography>
+            <Switch defaultChecked {...register("isUserFirst")} />
+            <Typography>
+              User <Emoji emoji="😬" component="span" />
+            </Typography>
+          </Stack>
+        </ToggleContainer>
+        <ButtonStyled type="submit" variant="contained">
+          Play
+          <Emoji emoji="🚀" component="span" />
+        </ButtonStyled>
+      </FormContainer>
     </form>
   );
 }
+
+const FormContainer = styled(Box)<BoxProps>(() => ({
+  display: "flex",
+  flexDirection: "column",
+  gap: "1rem",
+}));
+
+const TextFieldStyled = styled(TextField)<TextFieldProps>(() => ({
+  "& .MuiFormLabel-root": {
+    fontFamily: "'Noto Color Emoji', sans-serif",
+  },
+  "& .MuiInputBase-root legend": {
+    padding: "0 5px",
+  },
+}));
+
+const ToggleContainer = styled(Box)<BoxProps>(() => ({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  margin: "1rem 0",
+}));
+
+const ButtonStyled = styled(Button)<ButtonProps>(() => ({
+  gap: "5px",
+}));
 
 const nameValidate = {
   required: "'name' is required",

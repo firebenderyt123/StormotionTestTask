@@ -1,4 +1,5 @@
 import React from "react";
+import { Box } from "@mui/material";
 import GameField from "../../components/Game/GameField";
 import StartForm from "../../components/Game/StartForm";
 import { FormInputs } from "../../components/Game/StartForm/types";
@@ -27,12 +28,14 @@ function GameContainer(): JSX.Element {
   };
 
   return !game ? (
-    <StartForm onSubmit={playOnClick} />
+    <Box display="flex" justifyContent="center" my="2rem">
+      <StartForm onSubmit={playOnClick} />
+    </Box>
   ) : (
     <>
       <GameField game={game} onFinish={onGameEnded} />
       <WinnerModal
-        title={`${game.getWinner().name} wins!`}
+        title={`${game.getWinner().name} won!`}
         open={isGameEnded}
         playAgain={playAgainOnClick}
       />
